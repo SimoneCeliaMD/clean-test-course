@@ -37,7 +37,7 @@ describe('Test Order', () => {
     );
     //Assert: replace the return true.
     await waitFor(() => {
-      return true;
+      expect(screen.getAllByText('$2.50')).toHaveLength(1);
     });
   });
 
@@ -63,36 +63,37 @@ describe('Test Order', () => {
     );
     //Assert: replace the return true.
     await waitFor(() => {
-      return true;
+      expect(screen.getAllByText('$5.00')).toHaveLength(1);
+
     });
   });
-});
 
-const setupMock = () => {
-  //Mock API calls
-  const mockGet = jest.spyOn(axios, 'get');
-  mockGet.mockImplementation((url) => {
-    switch (url) {
-      case `${API_URL}/api/delivery/test-fun/0`:
-        return Promise.resolve({
-          data: {
-            status: 'success',
-            data: 2.5,
-          },
-        });
-      case `${API_URL}/api/delivery/test-fun/5`:
-        return Promise.resolve({
-          data: {
-            status: 'success',
-            data: 5.0,
-          },
-        });
-      default:
-        return Promise.resolve({
-          data: {
-            status: 'fail',
-          },
-        });
-    }
-  });
-};
+  const setupMock = () => {
+    //Mock API calls
+    const mockGet = jest.spyOn(axios, 'get');
+    mockGet.mockImplementation((url) => {
+      switch (url) {
+        case `${API_URL}/api/delivery/test-fun/0`:
+          return Promise.resolve({
+            data: {
+              status: 'success',
+              data: 2.5,
+            },
+          });
+        case `${API_URL}/api/delivery/test-fun/5`:
+          return Promise.resolve({
+            data: {
+              status: 'success',
+              data: 5.0,
+            },
+          });
+        default:
+          return Promise.resolve({
+            data: {
+              status: 'fail',
+            },
+          });
+      }
+    });
+  };
+});
